@@ -10,8 +10,7 @@ private:
   bool ready;
 
 public:
-  explicit Imos(usize n)
-      : diff(n + 1, 0), built_values(n, 0), ready(false) {}
+  explicit Imos(usize n) : diff(n + 1, 0), built_values(n, 0), ready(false) {}
 
   usize size() const { return built_values.size(); }
 

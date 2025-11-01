@@ -3,28 +3,35 @@
 #include "features/core.hpp"
 
 template <typename F>
-u64 bisect_first(u64 l, u64 r, F &&cond) {
-  while (l < r) {
-    u64 m = (l + r) / 2;
-    if (cond(m)) {
-      r = m;
+/// Finds the first index `i` in the range `[l, r]` such that `cond(i)` is true.
+/// If no such index exists, returns `r + 1`.
+i64 bisect_first(i64 l, i64 r, F &&cond) {
+  i64 left = l;
+  i64 right = r + 1;
+  while (left < right) {
+    i64 mid = left + (right - left) / 2;
+    if (cond(mid)) {
+      right = mid;
     } else {
-      l = m + 1;
+      left = mid + 1;
     }
   }
-  return l;
+  return left;
 }
 
 template <typename F>
-u64 bisect_last(u64 l, u64 r, F &&cond) {
-  while (l < r) {
-    u64 m = (l + r) / 2;
-    if (cond(m)) {
-      l = m + 1;
+/// Finds the last index `i` in the range `[l, r]` such that `cond(i)` is true.
+/// If no such index exists, returns `l - 1`.
+i64 bisect_last(i64 l, i64 r, F &&cond) {
+  i64 left = l - 1;
+  i64 right = r;
+  while (left < right) {
+    i64 mid = left + (right - left + 1) / 2;
+    if (cond(mid)) {
+      left = mid;
     } else {
-      r = m;
+      right = mid - 1;
     }
   }
-  return l - 1;
+  return left;
 }
-

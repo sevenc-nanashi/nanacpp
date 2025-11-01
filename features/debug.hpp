@@ -67,8 +67,7 @@ std::ostream &operator<<(std::ostream &os, const std::map<T, U> &m) {
 }
 
 template <typename T, typename U>
-std::ostream &operator<<(std::ostream &os,
-                          const std::unordered_map<T, U> &m) {
+std::ostream &operator<<(std::ostream &os, const std::unordered_map<T, U> &m) {
   os << "{";
   for (auto it = m.begin(); it != m.end(); ++it) {
     os << it->first << ": " << it->second;
@@ -89,24 +88,23 @@ std::ostream &operator<<(std::ostream &os,
 #else
 #define dbg(x)                                                                 \
   ([&]() {                                                                     \
-    std::cerr << "[dbg L" << __LINE__ << "] " << #x << " = ";                  \
     auto _dbg_x = (x);                                                         \
+    std::cerr << "[dbg L" << __LINE__ << "] " << #x << " = ";                  \
     std::cerr << _dbg_x << std::endl;                                          \
     return _dbg_x;                                                             \
   }())
 #define dbg2(x)                                                                \
   ([&]() {                                                                     \
-    std::cerr << "[[dbg L" << __LINE__ << "]] " << #x << " = ";                  \
     auto _dbg_x = (x);                                                         \
+    std::cerr << "[[dbg L" << __LINE__ << "]] " << #x << " = ";                \
     std::cerr << _dbg_x << std::endl;                                          \
     return _dbg_x;                                                             \
   }())
 #define dbg3(x)                                                                \
   ([&]() {                                                                     \
-    std::cerr << "[[[dbg L" << __LINE__ << "]]] " << #x << " = ";                  \
     auto _dbg_x = (x);                                                         \
+    std::cerr << "[[[dbg L" << __LINE__ << "]]] " << #x << " = ";              \
     std::cerr << _dbg_x << std::endl;                                          \
     return _dbg_x;                                                             \
   }())
 #endif
-
