@@ -36,6 +36,9 @@ using namespace std;
 #define range(i, l, r) for (int i = (l); i < (r); ++i)
 #define rangei(i, l, r) for (int i = (l); i <= (r); ++i)
 
+#define chmax(var, val) var = std::max(var, val)
+#define chmin(var, val) var = std::min(var, val)
+
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
 #define sz(x) ((int)(x).size())
