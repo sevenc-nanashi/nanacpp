@@ -6,6 +6,7 @@ template <typename T, typename U> class hpair {
 public:
   T first;
   U second;
+  hpair() = default;
   hpair(const T &f, const U &s) : first(f), second(s) {}
   bool operator==(const hpair<T, U> &other) const {
     return first == other.first && second == other.second;
