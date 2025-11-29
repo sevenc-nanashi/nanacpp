@@ -7,6 +7,8 @@ BUNDLE_OUTPUT = "dist/main.cpp"
 CPP_STANDARD = "-std=gnu++20"
 CPP_INCLUDES = "-I."
 
+task :default => %i[test bundle]
+
 namespace :features do
   desc "Bundle feature headers into a single file for competitive programming"
   task :bundle, [:output] do |_, args|
