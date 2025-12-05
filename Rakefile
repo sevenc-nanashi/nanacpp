@@ -3,7 +3,7 @@
 require "fileutils"
 
 FEATURE_FILES =
-  %w[core pair input debug array_sum bisect imos tally cumulative_sum_2d imos_2d]
+  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d]
     .freeze
 BUNDLE_OUTPUT = "dist/main.cpp"
 CPP_STANDARD = "-std=gnu++20"
