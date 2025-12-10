@@ -2,8 +2,17 @@
 
 require "fileutils"
 
+def alias_task(**tasks)
+  tasks.each do |new_name, old_name|
+    desc "Alias for #{old_name}"
+    task new_name, [*Rake.application[old_name].arg_names] do |t, args|
+      Rake::Task[old_name].invoke(*args.to_a)
+    end
+  end
+end
+
 FEATURE_FILES =
-  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d]
+  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d interval_set]
     .freeze
 BUNDLE_OUTPUT = "dist/main.cpp"
 
@@ -44,14 +53,17 @@ namespace :features do
   end
 end
 
-desc "Bundle feature headers into one file"
-task bundle: "features:bundle"
-
 namespace :tests do
   desc "Build and run all feature tests"
-  task :run do
+  task :run, [:pattern] do |_, args|
     test_sources = Dir.glob("tests/test_*.cpp")
     raise "No tests found" if test_sources.empty?
+
+    if args[:pattern]
+      pattern = Regexp.new(args[:pattern])
+      test_sources.select! { |src| File.basename(src) =~ pattern }
+      raise "No tests match the pattern #{args[:pattern]}" if test_sources.empty?
+    end
 
     options = File.read("./compile_flags.txt").strip.split("\n")
 
@@ -70,8 +82,12 @@ namespace :tests do
   end
 end
 
+task :tests do
+  raise "Please specify a subtask. Make sure you quoted like `rake 'test[interval_set]'` because shell treats the argument as a glob pattern otherwise."
+end
+
 desc "Run tests"
-task test: "tests:run"
+alias_task test: "tests:run", bundle: "features:bundle"
 
 def iputs(msg)
   if $stdout.tty?
