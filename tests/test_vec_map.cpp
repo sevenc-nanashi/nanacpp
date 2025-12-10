@@ -37,5 +37,12 @@ int main() {
   vec_map_inplace(empty_vec, [](int x) { return x + 1; });
   assert(empty_vec.empty());
 
+  let set = std::set<int>{5, 10, 15};
+  auto set_mapped = vec_map<int>(set, [](int x) { return x / 5; });
+  assert((set_mapped == vector<int>{1, 2, 3}));
+
+  vec_map_inplace(set_mapped, [](int x) { return x + 10; });
+  assert((set_mapped == vector<int>{11, 12, 13}));
+
   return 0;
 }
