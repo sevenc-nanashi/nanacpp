@@ -1,2 +1,3 @@
 -I.
 -std=gnu++23
+-Wno-misc-definitions-in-headers

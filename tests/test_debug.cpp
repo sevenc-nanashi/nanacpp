@@ -36,6 +36,26 @@ int main() {
   auto umap_output = oss.str();
   assert(umap_output == "{1: 5, 2: 6}" || umap_output == "{2: 6, 1: 5}");
 
+  oss.str("");
+  oss.clear();
+  u128 big = u128{1} << 64;
+  oss << big;
+  assert(oss.str() == "18446744073709551616");
+
+  oss.str("");
+  oss.clear();
+  oss << u128{0};
+  assert(oss.str() == "0");
+
+  oss.str("");
+  oss.clear();
+  oss << static_cast<i128>(big + 42);
+  assert(oss.str() == "18446744073709551658");
+
+  oss.str("");
+  oss.clear();
+  oss << -static_cast<i128>(big + 99);
+  assert(oss.str() == "-18446744073709551715");
+
   return 0;
 }
-

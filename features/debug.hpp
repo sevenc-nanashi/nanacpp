@@ -1,6 +1,32 @@
 #pragma once
 
 #include "features/core.hpp"
+#include <string>
+
+std::ostream &operator<<(std::ostream &os, const u128 &v) { // NOLINT: いうて1ファイルにまとまるし...
+  u128 temp = v;
+  if (temp == 0) {
+    os << '0';
+    return os;
+  }
+  std::string digits;
+  while (temp > 0) {
+    digits.push_back(static_cast<char>('0' + (temp % 10)));
+    temp /= 10;
+  }
+  std::reverse(digits.begin(), digits.end());
+  os << digits;
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const i128 &v) { // NOLINT: いうて1ファイルにまとまるし...
+  if (v >= 0) {
+    return os << static_cast<u128>(v);
+  } else {
+    os << '-';
+    return os << static_cast<u128>(-v);
+  }
+}
 
 /// `std::vector` を可読なリスト形式で出力する。
 template <typename T>
