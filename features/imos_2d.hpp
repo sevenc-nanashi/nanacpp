@@ -44,11 +44,11 @@ public:
     add(top, left, bottom + 1, right + 1, value);
   }
 
-  /// 累積して最終的な 2 次元配列を構築し、参照を返す。複数回呼ぶと結果をキャッシュする。
+  /// 累積して最終的な 2
+  /// 次元配列を構築し、参照を返す。複数回呼ぶと結果をキャッシュする。
   [[nodiscard]] const std::vector<std::vector<T>> &build() {
     if (!ready) {
-      std::vector<std::vector<T>> acc(height + 1,
-                                      std::vector<T>(width + 1, 0));
+      std::vector<std::vector<T>> acc(height + 1, std::vector<T>(width + 1, 0));
       for (usize y = 0; y <= height; ++y) {
         for (usize x = 0; x <= width; ++x) {
           T val = diff[y][x];
@@ -85,8 +85,7 @@ public:
   }
 
   /// 基底の 2 次元配列に差分を適用した新しい配列を返す。
-  std::vector<std::vector<T>> applied(
-      std::vector<std::vector<T>> base) {
+  std::vector<std::vector<T>> applied(std::vector<std::vector<T>> base) {
     assert(base.size() == height);
     for (const auto &row : base) {
       assert(row.size() == width);

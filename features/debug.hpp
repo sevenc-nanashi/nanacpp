@@ -3,7 +3,9 @@
 #include "features/core.hpp"
 #include <string>
 
-std::ostream &operator<<(std::ostream &os, const u128 &v) { // NOLINT: いうて1ファイルにまとまるし...
+std::ostream &
+operator<<(std::ostream &os, // NOLINT: いうて1ファイルにまとまるし...
+           const u128 &v) {
   u128 temp = v;
   if (temp == 0) {
     os << '0';
@@ -19,7 +21,9 @@ std::ostream &operator<<(std::ostream &os, const u128 &v) { // NOLINT: いうて
   return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const i128 &v) { // NOLINT: いうて1ファイルにまとまるし...
+std::ostream &
+operator<<(std::ostream &os, // NOLINT: いうて1ファイルにまとまるし...
+           const i128 &v) {
   if (v >= 0) {
     return os << static_cast<u128>(v);
   } else {

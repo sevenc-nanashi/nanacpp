@@ -19,4 +19,3 @@ int main() {
   s.insert(p3);
   assert(s.size() == 2);
 }
-

@@ -89,6 +89,10 @@ end
 desc "Run tests"
 alias_task test: "tests:run", bundle: "features:bundle"
 
+task :format do
+  sh "clang-format -i features/*.hpp tests/*.cpp main.cpp"
+end
+
 def iputs(msg)
   if $stdout.tty?
     puts "\e[34m#{msg}\e[0m"

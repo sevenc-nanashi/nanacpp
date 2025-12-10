@@ -33,8 +33,7 @@ private:
 
 public:
   /// `n` 以下の整数を対象に篩を構築する。
-  explicit PrimeSieve(int n)
-      : limit(n), primes_vec(), least_prime(n + 1, 0) {
+  explicit PrimeSieve(int n) : limit(n), primes_vec(), least_prime(n + 1, 0) {
     assert(limit >= 0);
     build();
   }

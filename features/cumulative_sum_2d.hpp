@@ -18,8 +18,7 @@ public:
       assert(grid[y].size() == width);
       for (usize x = 0; x < width; ++x) {
         prefix[y + 1][x + 1] =
-            grid[y][x] + prefix[y][x + 1] + prefix[y + 1][x] -
-            prefix[y][x];
+            grid[y][x] + prefix[y][x + 1] + prefix[y + 1][x] - prefix[y][x];
       }
     }
   }
@@ -36,8 +35,8 @@ public:
     assert(left <= right);
     assert(bottom <= height);
     assert(right <= width);
-    return prefix[bottom][right] - prefix[top][right] -
-           prefix[bottom][left] + prefix[top][left];
+    return prefix[bottom][right] - prefix[top][right] - prefix[bottom][left] +
+           prefix[top][left];
   }
 
   /// 長方形 [top, bottom] × [left, right] の和を返す。
