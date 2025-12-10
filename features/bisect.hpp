@@ -3,8 +3,8 @@
 #include "features/core.hpp"
 
 template <typename F>
-/// Finds the first index `i` in the half-open range `[l, r)` such that
-/// `cond(i)` is true. If no such index exists, returns `std::nullopt`.
+/// 半開区間 `[l, r)` で `cond(i)` が真になる最初の `i` を返す。
+/// 存在しなければ `std::nullopt` を返す。
 std::optional<i64> bisect_first(i64 l, i64 r, F &&cond) {
   if (cond(l)) {
     return l;
@@ -27,15 +27,15 @@ std::optional<i64> bisect_first(i64 l, i64 r, F &&cond) {
 }
 
 template <typename F>
-/// Finds the first index `i` in the closed range `[l, r]` such that
-/// `cond(i)` is true. If no such index exists, returns `std::nullopt`.
+/// 閉区間 `[l, r]` で `cond(i)` が真になる最初の `i` を返す。
+/// 存在しなければ `std::nullopt` を返す。
 std::optional<i64> bisect_first_closed(i64 l, i64 r, F &&cond) {
   return bisect_first(l, r + 1, cond);
 }
 
 template <typename F>
-/// Finds the last index `i` in the half-open range `[l, r)` such that
-/// `cond(i)` is true. If no such index exists, returns `std::nullopt`.
+/// 半開区間 `[l, r)` で `cond(i)` が真になる最後の `i` を返す。
+/// 存在しなければ `std::nullopt` を返す。
 std::optional<i64> bisect_last(i64 l, i64 r, F &&cond) {
   if (!cond(l)) {
     return std::nullopt;
@@ -58,8 +58,8 @@ std::optional<i64> bisect_last(i64 l, i64 r, F &&cond) {
 }
 
 template <typename F>
-/// Finds the last index `i` in the closed range `[l, r]` such that
-/// `cond(i)` is true. If no such index exists, returns `std::nullopt`.
+/// 閉区間 `[l, r]` で `cond(i)` が真になる最後の `i` を返す。
+/// 存在しなければ `std::nullopt` を返す。
 std::optional<i64> bisect_last_closed(i64 l, i64 r, F &&cond) {
   return bisect_last(l, r + 1, cond);
 }

@@ -2,6 +2,7 @@
 
 #include "features/core.hpp"
 
+/// `std::vector` を可読なリスト形式で出力する。
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
   os << "[";
@@ -15,6 +16,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
   return os;
 }
 
+/// `std::set` を空白区切りで出力する。
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const std::set<T> &v) {
   os << "{";
@@ -30,6 +32,7 @@ std::ostream &operator<<(std::ostream &os, const std::set<T> &v) {
   return os;
 }
 
+/// `std::unordered_set` を空白区切りで出力する。
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &v) {
   os << "{";
@@ -45,12 +48,14 @@ std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &v) {
   return os;
 }
 
+/// `std::pair` を `(first, second)` 形式で出力する。
 template <typename T, typename U>
 std::ostream &operator<<(std::ostream &os, const std::pair<T, U> &p) {
   os << "(" << p.first << ", " << p.second << ")";
   return os;
 }
 
+/// `std::map` を `key: value` の並びで出力する。
 template <typename T, typename U>
 std::ostream &operator<<(std::ostream &os, const std::map<T, U> &m) {
   os << "{";
@@ -66,6 +71,7 @@ std::ostream &operator<<(std::ostream &os, const std::map<T, U> &m) {
   return os;
 }
 
+/// `std::unordered_map` を `key: value` の並びで出力する。
 template <typename T, typename U>
 std::ostream &operator<<(std::ostream &os, const std::unordered_map<T, U> &m) {
   os << "{";
@@ -81,6 +87,7 @@ std::ostream &operator<<(std::ostream &os, const std::unordered_map<T, U> &m) {
   return os;
 }
 
+/// ローカル実行時のみ変数を stderr に出力し、値をそのまま返すデバッグマクロ群。
 #ifdef ONLINE_JUDGE
 #define dbg(x) x
 #define dbg2(x) x

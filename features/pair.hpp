@@ -2,18 +2,23 @@
 
 #include "features/core.hpp"
 
+/// `std::pair` のハッシュ対応版。
 template <typename T, typename U> class hpair {
 public:
   T first;
   U second;
+  /// デフォルトコンストラクタ。
   hpair() = default;
+  /// 値を受け取るコンストラクタ。
   hpair(const T &f, const U &s) : first(f), second(s) {}
+  /// 等価比較。
   bool operator==(const hpair<T, U> &other) const {
     return first == other.first && second == other.second;
   }
 };
 
 namespace std {
+/// `hpair` を unordered 系コンテナで使うためのハッシュ。
 template <typename T, typename U> struct hash<hpair<T, U>> {
   size_t operator()(const hpair<T, U> &p) const {
     return hash<T>()(p.first) ^ (hash<U>()(p.second) << 1);

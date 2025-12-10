@@ -6,8 +6,6 @@ FEATURE_FILES =
   %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d]
     .freeze
 BUNDLE_OUTPUT = "dist/main.cpp"
-CPP_STANDARD = "-std=gnu++20"
-CPP_INCLUDES = "-I."
 
 task :default => %i[test bundle]
 
@@ -55,18 +53,37 @@ namespace :tests do
     test_sources = Dir.glob("tests/test_*.cpp")
     raise "No tests found" if test_sources.empty?
 
+    options = File.read("./compile_flags.txt").strip.split("\n")
+
     build_dir = File.join("build", "tests")
     FileUtils.mkdir_p(build_dir)
 
-    test_sources.each do |source|
+    test_sources.each_with_index do |source, index|
       exe_name = File.basename(source, ".cpp")
       exe_path = File.join(build_dir, exe_name)
-      cmd = ["g++", CPP_STANDARD, CPP_INCLUDES, source, "-o", exe_path]
+      cmd = ["g++", *options, source, "-o", exe_path]
+      iputs "[#{index + 1}/#{test_sources.size}] Building and running #{source}..."
       sh cmd.join(" ")
       sh exe_path
+      sputs "#{exe_name} passed."
     end
   end
 end
 
 desc "Run tests"
 task test: "tests:run"
+
+def iputs(msg)
+  if $stdout.tty?
+    puts "\e[34m#{msg}\e[0m"
+  else
+    puts msg
+  end
+end
+def sputs(msg)
+  if $stdout.tty?
+    puts "\e[32m#{msg}\e[0m"
+  else
+    puts msg
+  end
+end

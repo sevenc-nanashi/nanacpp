@@ -41,7 +41,7 @@ using namespace std;
 
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define sz(x) ((int)(x).size())
+#define sz(x) ((i64)(x).size())
 
 using ll = long long;
 using i8 = int8_t;

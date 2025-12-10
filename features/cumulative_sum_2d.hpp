@@ -2,7 +2,7 @@
 
 #include "features/core.hpp"
 
-// 2 次元累積和
+/// 2 次元配列の累積和を保持し、長方形領域の総和を O(1) で取得するクラス。
 template <typename T> class CumulativeSum2D {
 private:
   usize height;
@@ -10,6 +10,7 @@ private:
   std::vector<std::vector<T>> prefix;
 
 public:
+  /// `grid` の累積和を構築する。行ごとの幅が一致していることを前提とする。
   explicit CumulativeSum2D(const std::vector<std::vector<T>> &grid)
       : height(grid.size()), width(height ? grid[0].size() : 0),
         prefix(height + 1, std::vector<T>(width + 1, 0)) {
@@ -23,10 +24,13 @@ public:
     }
   }
 
+  /// 行数を返す。
   usize rows() const { return height; }
+
+  /// 列数を返す。
   usize cols() const { return width; }
 
-  // 長方形 [top, bottom) × [left, right) の和
+  /// 長方形 [top, bottom) × [left, right) の和を返す。
   T sum(usize top, usize left, usize bottom, usize right) const {
     assert(top <= bottom);
     assert(left <= right);
@@ -36,7 +40,7 @@ public:
            prefix[bottom][left] + prefix[top][left];
   }
 
-  // 長方形 [top, bottom] × [left, right] の和
+  /// 長方形 [top, bottom] × [left, right] の和を返す。
   T sum_closed(usize top, usize left, usize bottom, usize right) const {
     assert(bottom < height);
     assert(right < width);
