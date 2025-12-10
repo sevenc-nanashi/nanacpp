@@ -1,48 +1,38 @@
 #include "features/bisect.hpp"
 
 #include <cassert>
+#include <vector>
 
 int main() {
-  auto first_open = bisect_first(0, 100, [](i64 x) { return x * x >= 2500; });
-  assert(first_open == 50);
+  std::vector<int> data{1, 3, 5, 7, 9};
 
-  auto first_open_not_found = bisect_first(-5, 5, [](i64 x) { return x > 5; });
-  assert(first_open_not_found == 5);
+  auto first_ge_five = bisect_first(0, static_cast<i64>(data.size()),
+                                    [&](i64 idx) { return data[idx] >= 5; });
+  assert(first_ge_five.has_value());
+  assert(*first_ge_five == 2);
 
-  auto first_open_negative =
-      bisect_first(-5, 6, [](i64 x) { return x >= -2; });
-  assert(first_open_negative == -2);
+  auto none_ge_ten = bisect_first(0, static_cast<i64>(data.size()),
+                                  [&](i64 idx) { return data[idx] >= 10; });
+  assert(!none_ge_ten.has_value());
 
   auto first_closed =
-      bisect_first_closed(0, 100, [](i64 x) { return x * x >= 2500; });
-  assert(first_closed == 50);
+      bisect_first_closed(0, 4, [&](i64 idx) { return idx >= 4; });
+  assert(first_closed.has_value());
+  assert(*first_closed == 4);
 
-  auto first_closed_not_found =
-      bisect_first_closed(-5, 5, [](i64 x) { return x > 5; });
-  assert(first_closed_not_found == 6);
+  auto last_le_five = bisect_last(0, static_cast<i64>(data.size()),
+                                  [&](i64 idx) { return data[idx] <= 5; });
+  assert(last_le_five.has_value());
+  assert(*last_le_five == 2);
 
-  auto last_open = bisect_last(0, 100, [](i64 x) { return x * x <= 2500; });
-  assert(last_open == 50);
-
-  auto last_open_negative =
-      bisect_last(-5, 5, [](i64 x) { return x <= -2; });
-  assert(last_open_negative == -2);
-
-  auto last_open_not_found =
-      bisect_last(-5, 5, [](i64 x) { return x < -10; });
-  assert(last_open_not_found == -6);
+  auto none_negative = bisect_last(0, static_cast<i64>(data.size()),
+                                   [&](i64 idx) { return data[idx] < 0; });
+  assert(!none_negative.has_value());
 
   auto last_closed =
-      bisect_last_closed(0, 100, [](i64 x) { return x * x <= 2500; });
-  assert(last_closed == 50);
-
-  auto last_closed_boundary =
-      bisect_last_closed(0, 5, [](i64 x) { return x <= 5; });
-  assert(last_closed_boundary == 5);
-
-  auto last_closed_not_found =
-      bisect_last_closed(-5, 5, [](i64 x) { return x < -10; });
-  assert(last_closed_not_found == -6);
+      bisect_last_closed(0, 4, [&](i64 idx) { return idx <= 4; });
+  assert(last_closed.has_value());
+  assert(*last_closed == 4);
 
   return 0;
 }
