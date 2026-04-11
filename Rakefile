@@ -12,8 +12,13 @@ def alias_task(**tasks)
 end
 
 FEATURE_FILES =
-  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d interval_set]
+  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d interval_set vec_map]
     .freeze
+
+all_feature_files = Dir.glob("./features/*.hpp").map{|path| path.sub("./features/", "").sub(".hpp", "") }
+missing_features = all_feature_files - FEATURE_FILES
+raise "FEATURE_FILES is missing features: #{missing_features.join(", ")}" unless missing_features
+
 BUNDLE_OUTPUT = "dist/main.cpp"
 
 task :default => %i[test bundle]
