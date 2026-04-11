@@ -12,7 +12,7 @@ def alias_task(**tasks)
 end
 
 FEATURE_FILES =
-  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d interval_set vec_map]
+  %w[core pair input debug array_sum bisect imos prime tally cumulative_sum_2d imos_2d interval_set vec_map key_packer]
     .freeze
 
 all_feature_files = Dir.glob("./features/*.hpp").map{|path| path.sub("./features/", "").sub(".hpp", "") }
