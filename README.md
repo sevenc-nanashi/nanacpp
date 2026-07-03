@@ -12,6 +12,7 @@
 - `features/cumulative_sum_2d.hpp`：2次元累積和`CumulativeSum2D`クラスで長方形領域の総和をO(1)で取得
 - `features/sum.hpp`：コンテナ内の要素の総和を求める`sum`関数を提供
 - `features/vec_map.hpp`：コンテナ内の要素を変換する`vec_map`/`vec_map_inplace`関数を提供
+- `features/sort_by.hpp`：指定したキーでコンテナを並べ替える`sort_by`/`sort_by_desc`関数を提供
 - `features/bisect.hpp`：条件判定関数を受け取る半開区間用`bisect_first`/`bisect_last`、閉区間用`bisect_first_closed`/`bisect_last_closed`で二分探索をテンプレ化
 - `features/imos.hpp`：区間加算を効率化する`Imos`クラスで差分配列を構築
 - `features/imos_2d.hpp`：2次元Imos法の`Imos2D`クラスで長方形加算をまとめて反映
