@@ -3,7 +3,7 @@
 #include <cassert>
 
 int main() {
-  let data = vector<int>{1, 2, 3, 4, 5};
+  let data = std::vector<int>{1, 2, 3, 4, 5};
   ArraySum<int> arr_sum(data);
 
   assert(arr_sum.sum(0, 5) == 15);

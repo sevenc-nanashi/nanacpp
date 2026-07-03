@@ -3,7 +3,7 @@
 #include <cassert>
 
 int main() {
-  vector<vector<int>> grid = {
+  Vec2<int> grid = {
       {1, 2, 3},
       {4, 5, 6},
       {7, 8, 9},
@@ -18,7 +18,7 @@ int main() {
   assert(cs.sum_closed(0, 0, 1, 1) == 12);
   assert(cs.sum_closed(2, 0, 2, 2) == 24);
 
-  vector<vector<long long>> rect = {
+  Vec2<long long> rect = {
       {10, -5},
       {3, 4},
       {7, 1},

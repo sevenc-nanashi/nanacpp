@@ -8,7 +8,7 @@ int main() {
   imos.add(1, 1, 3, 4, 2);
 
   const auto &values = imos.build();
-  const vector<vector<int>> expected = {
+  const Vec<Vec<int>> expected = {
       {1, 1, 1, 0},
       {1, 3, 3, 2},
       {0, 2, 2, 2},
@@ -19,15 +19,15 @@ int main() {
   Imos2D<long long> closed(2, 2);
   closed.add_closed(0, 0, 1, 1, 5);
   const auto &first = closed.build();
-  assert(first == vector<vector<long long>>({{5, 5}, {5, 5}}));
+  assert(first == Vec<Vec<long long>>({{5, 5}, {5, 5}}));
 
   closed.add(0, 1, 2, 2, 2);
   const auto &second = closed.build();
-  assert(second == vector<vector<long long>>({{5, 7}, {5, 7}}));
+  assert(second == Vec<Vec<long long>>({{5, 7}, {5, 7}}));
 
-  vector<vector<long long>> base = {{10, 10}, {10, 10}};
+  Vec2<long long> base = {{10, 10}, {10, 10}};
   const auto applied = closed.applied(base);
-  assert(applied == vector<vector<long long>>({{15, 17}, {15, 17}}));
+  assert(applied == Vec<Vec<long long>>({{15, 17}, {15, 17}}));
 
   return 0;
 }

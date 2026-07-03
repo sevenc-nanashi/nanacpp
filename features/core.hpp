@@ -2,8 +2,6 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define fn auto
 #define let auto
 
@@ -20,17 +18,14 @@ using namespace std;
   for (usize i = 0; i < (usize)a.size(); ++i)                                  \
     if (auto &x = a[i]; true)
 #define enumerate2(x, y, i, a)                                                 \
-  usize i = 0;                                                                 \
-  for (auto it = a.begin(); it != a.end(); ++it, ++i)                          \
-    if (auto &[x, y] = *it; true)
+  for (usize i = 0; i < (usize)a.size(); ++i)                                  \
+    if (auto &[x, y] = a[i]; true)
 #define enumerate3(x, y, z, i, a)                                              \
-  usize i = 0;                                                                 \
-  for (auto it = a.begin(); it != a.end(); ++it, ++i)                          \
-    if (auto &[x, y, z] = *it; true)
+  for (usize i = 0; i < (usize)a.size(); ++i)                                  \
+    if (auto &[x, y, z] = a[i]; true)
 #define enumerate4(w, x, y, z, i, a)                                           \
-  usize i = 0;                                                                 \
-  for (auto it = a.begin(); it != a.end(); ++it, ++i)                          \
-    if (auto &[w, x, y, z] = *it; true)
+  for (usize i = 0; i < (usize)a.size(); ++i)                                  \
+    if (auto &[w, x, y, z] = a[i]; true)
 
 #define rep(i, a) for (int i = 0; i < (a); ++i)
 #define range(i, l, r) for (int i = (l); i < (r); ++i)
@@ -56,3 +51,25 @@ using u32 = uint32_t;
 using u64 = uint64_t;
 using u128 = __uint128_t;
 using usize = std::make_unsigned<std::size_t>::type;
+using f32 = float;
+using f64 = double;
+
+/// メモ：Compareには「どういう要素が優先されるか」を指定する。
+template <typename T, typename Compare = std::less<T>>
+using PriorityQueue = std::priority_queue<T, std::vector<T>, Compare>;
+
+char eol[] = "\n"; // NOLINT: 言うてテンプレにまとまるし...
+
+template <typename T> using Vec = std::vector<T>;
+
+template <typename T> using Vec2 = std::vector<std::vector<T>>;
+
+template <typename T> using Vec3 = std::vector<std::vector<std::vector<T>>>;
+
+template <typename T, typename U> using OrderedMap = std::map<T, U>;
+
+template <typename T, typename U> using Map = std::unordered_map<T, U>;
+
+template <typename T> using OrderedSet = std::set<T>;
+
+template <typename T> using Set = std::unordered_set<T>;

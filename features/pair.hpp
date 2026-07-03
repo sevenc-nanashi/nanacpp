@@ -25,3 +25,5 @@ template <typename T, typename U> struct hash<hpair<T, U>> {
   }
 };
 } // namespace std
+
+template <typename T, typename U> using Pair = hpair<T, U>;

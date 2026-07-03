@@ -3,7 +3,7 @@
 #include <cassert>
 
 int main() {
-  let data = vector<int>{3, 3, 1, 2, 3, 2};
+  let data = Vec<int>{3, 3, 1, 2, 3, 2};
   auto counts = tally(data);
 
   assert(counts.at(1) == 1);

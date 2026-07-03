@@ -3,6 +3,13 @@
 #include "features/core.hpp"
 #include <string>
 
+/// `std::pair` を `(first, second)` 形式で出力する。
+template <typename T, typename U>
+std::ostream &operator<<(std::ostream &os, const std::pair<T, U> &p) {
+  os << "(" << p.first << ", " << p.second << ")";
+  return os;
+}
+
 std::ostream &
 operator<<(std::ostream &os, // NOLINT: いうて1ファイルにまとまるし...
            const u128 &v) {
@@ -75,13 +82,6 @@ std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &v) {
     }
   }
   os << "}";
-  return os;
-}
-
-/// `std::pair` を `(first, second)` 形式で出力する。
-template <typename T, typename U>
-std::ostream &operator<<(std::ostream &os, const std::pair<T, U> &p) {
-  os << "(" << p.first << ", " << p.second << ")";
   return os;
 }
 

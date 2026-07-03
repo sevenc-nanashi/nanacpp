@@ -6,7 +6,7 @@
 int main() {
   std::ostringstream oss;
 
-  oss << vector<int>{1, 2, 3};
+  oss << Vec<int>{1, 2, 3};
   assert(oss.str() == "[1, 2, 3]");
 
   oss.str("");
