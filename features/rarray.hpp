@@ -266,30 +266,44 @@ public:
 
   fn sort() const -> RArray {
     RArray result = *this;
-    std::sort(result.begin(), result.end());
+    result.sort_inplace();
     return result;
   }
 
+  fn sort_inplace() -> void { std::sort(this->begin(), this->end()); }
+
   fn sort_desc() const -> RArray {
     RArray result = *this;
-    std::sort(result.begin(), result.end(), std::greater<T>());
+    result.sort_desc_inplace();
     return result;
+  }
+
+  fn sort_desc_inplace() -> void {
+    std::sort(this->begin(), this->end(), std::greater<T>());
   }
 
   template <typename F> fn sort_by(F &&selector) const -> RArray {
     RArray result = *this;
-    std::sort(result.begin(), result.end(), [&](const auto &a, const auto &b) {
+    result.sort_by_inplace(std::forward<F>(selector));
+    return result;
+  }
+
+  template <typename F> fn sort_by_inplace(F &&selector) -> void {
+    std::sort(this->begin(), this->end(), [&](const auto &a, const auto &b) {
       return std::invoke(selector, a) < std::invoke(selector, b);
     });
-    return result;
   }
 
   template <typename F> fn sort_by_desc(F &&selector) const -> RArray {
     RArray result = *this;
-    std::sort(result.begin(), result.end(), [&](const auto &a, const auto &b) {
+    result.sort_by_desc_inplace(std::forward<F>(selector));
+    return result;
+  }
+
+  template <typename F> fn sort_by_desc_inplace(F &&selector) -> void {
+    std::sort(this->begin(), this->end(), [&](const auto &a, const auto &b) {
       return std::invoke(selector, a) > std::invoke(selector, b);
     });
-    return result;
   }
 
   fn dup() const -> RArray { return RArray(this->begin(), this->end()); }

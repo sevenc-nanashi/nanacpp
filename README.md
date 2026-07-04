@@ -21,5 +21,5 @@
 - `features/rarray.hpp`：Ruby風のArray。
 - `features/rrange.hpp`：Ruby風のRangeで整数列を簡潔に生成
 - `features/prime.hpp`：コピー不可な`PrimeSieve`クラスで篩ベースの素数判定や素因数分解を提供
-- `features/print.hpp`：`std::cout << value << '\n'を簡略化する`print`関数
+- `features/print.hpp`：`std::cout << value << '\n'`を簡略化する`print`関数
 - `features/tally.hpp`：`map`ベースの`tally`関数で要素頻度をカウント

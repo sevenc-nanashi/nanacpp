@@ -69,6 +69,13 @@ int main() {
   assert((unordered_nums.sort() == RArray<int>{1, 1, 2, 3, 4, 5, 9}));
   assert((unordered_nums == RArray<int>{3, 1, 4, 1, 5, 9, 2}));
 
+  RArray<int> inplace_nums = unordered_nums;
+  inplace_nums.sort_inplace();
+  assert((inplace_nums == RArray<int>{1, 1, 2, 3, 4, 5, 9}));
+
+  inplace_nums.sort_desc_inplace();
+  assert((inplace_nums == RArray<int>{9, 5, 4, 3, 2, 1, 1}));
+
   auto tally_result = unordered_nums.tally();
   static_assert(std::is_same_v<decltype(tally_result), Map<int, usize>>);
   assert(tally_result.at(1) == 2);
@@ -131,6 +138,17 @@ int main() {
               {"carol", 40}, {"alice", 30}, {"bob", 20}}));
   assert((scores == RArray<std::pair<std::string, int>>{
                         {"alice", 30}, {"bob", 20}, {"carol", 40}}));
+
+  auto inplace_scores = scores;
+  inplace_scores.sort_by_inplace(
+      [](const auto &score) { return score.second; });
+  assert((inplace_scores == RArray<std::pair<std::string, int>>{
+                                {"bob", 20}, {"alice", 30}, {"carol", 40}}));
+
+  inplace_scores.sort_by_desc_inplace(
+      [](const auto &score) { return score.second; });
+  assert((inplace_scores == RArray<std::pair<std::string, int>>{
+                                {"carol", 40}, {"alice", 30}, {"bob", 20}}));
 
   RArray<std::string> movable_words{"hello", "world"};
   auto moved_words = std::move(movable_words).into_vec();
