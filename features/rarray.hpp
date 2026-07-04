@@ -37,9 +37,8 @@ private:
 #endif
 
   template <typename Index>
-  static
-      typename Base::size_type normalize_index(Index index,
-                                               typename Base::size_type size) {
+  static typename Base::size_type
+  normalize_index(Index index, typename Base::size_type size) {
     using difference_type = typename Base::difference_type;
     const difference_type signed_size = static_cast<difference_type>(size);
     const difference_type signed_index = static_cast<difference_type>(index);
@@ -52,6 +51,13 @@ private:
   using RangeLike = std::void_t<decltype(std::declval<Range>().first()),
                                 decltype(std::declval<Range>().last()),
                                 decltype(std::declval<Range>().exclude_last())>;
+
+  template <typename U>
+  using Comparable =
+      std::void_t<decltype(std::declval<U>() < std::declval<U>())>;
+
+  template <typename U>
+  using Numeric = std::enable_if_t<std::is_arithmetic<U>::value>;
 
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
   template <typename Range>
@@ -217,4 +223,80 @@ public:
     return slice_by_range(range);
   }
 #endif
+
+  std::optional<T> first() const {
+    if (this->empty()) {
+      return std::nullopt;
+    }
+    return Base::front();
+  }
+
+  std::optional<T> last() const {
+    if (this->empty()) {
+      return std::nullopt;
+    }
+    return Base::back();
+  }
+
+  bool include(const T &value) const {
+    return std::find(this->begin(), this->end(), value) != this->end();
+  }
+
+  size_type count(const T &value) const {
+    return static_cast<size_type>(
+        std::count(this->begin(), this->end(), value));
+  }
+
+  RArray take(size_type count) const {
+    const size_type take_count = std::min(count, this->size());
+    return RArray(this->begin(), this->begin() + take_count);
+  }
+
+  RArray drop(size_type count) const {
+    const size_type drop_count = std::min(count, this->size());
+    return RArray(this->begin() + drop_count, this->end());
+  }
+
+  RArray reverse() const {
+    RArray result(this->rbegin(), this->rend());
+    return result;
+  }
+
+  template <typename U = T, typename = Comparable<U>>
+  std::optional<T> min() const {
+    if (this->empty()) {
+      return std::nullopt;
+    }
+    return *std::min_element(this->begin(), this->end());
+  }
+
+  template <typename U = T, typename = Comparable<U>>
+  std::optional<T> max() const {
+    if (this->empty()) {
+      return std::nullopt;
+    }
+    return *std::max_element(this->begin(), this->end());
+  }
+
+  template <typename U = T, typename = Comparable<U>>
+  std::optional<std::pair<T, T>> minmax() const {
+    if (this->empty()) {
+      return std::nullopt;
+    }
+    const auto [min_it, max_it] =
+        std::minmax_element(this->begin(), this->end());
+    return std::pair<T, T>{*min_it, *max_it};
+  }
+
+  template <typename U = T, typename = Numeric<U>> T sum() const {
+    return std::accumulate(this->begin(), this->end(), static_cast<T>(0));
+  }
+
+  template <typename U = T, typename = Numeric<U>> T product() const {
+    return std::accumulate(this->begin(), this->end(), static_cast<T>(1),
+                           std::multiplies<T>());
+  }
 };
+
+template <typename T> using RArray2 = RArray<RArray<T>>;
+template <typename T> using RArray3 = RArray<RArray<RArray<T>>>;

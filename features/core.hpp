@@ -55,8 +55,8 @@ using f32 = float;
 using f64 = double;
 
 /// メモ：
-/// Compareを(T a, T b) -> boolとしたとき、優先して取り出されるのは、Compare(a, b)がtrueとなるbである。
-/// つまり、Compareには「bを優先する条件」をいれる。
+/// Compareを(T a, T b) -> boolとしたとき、優先して取り出されるのは、Compare(a,
+/// b)がtrueとなるbである。 つまり、Compareには「bを優先する条件」をいれる。
 template <typename T, typename Compare = std::less<T>>
 using PriorityQueue = std::priority_queue<T, std::vector<T>, Compare>;
 

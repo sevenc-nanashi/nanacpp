@@ -4,6 +4,20 @@
 #include <cassert>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
+
+template <typename Array, typename = void> struct HasSum : std::false_type {};
+
+template <typename Array>
+struct HasSum<Array, std::void_t<decltype(std::declval<Array>().sum())>>
+    : std::true_type {};
+
+template <typename Array, typename = void>
+struct HasProduct : std::false_type {};
+
+template <typename Array>
+struct HasProduct<Array, std::void_t<decltype(std::declval<Array>().product())>>
+    : std::true_type {};
 
 int main() {
   RArray<int> nums{1, 2, 3};
@@ -29,12 +43,56 @@ int main() {
   assert((nums[rrange(-3, -1)] == RArray<int>{20, 30, 40}));
   assert((nums[rexrange(2, 2)] == RArray<int>{}));
   assert((const_nums[rrange(0, 1)] == RArray<int>{1, 20}));
+  assert(nums.first().has_value());
+  assert(*nums.first() == 1);
+  assert(nums.last().has_value());
+  assert(*nums.last() == 40);
+  assert(nums.include(20));
+  assert(!nums.include(100));
+  assert(nums.count(20) == 1);
+  assert((nums.take(2) == RArray<int>{1, 20}));
+  assert((nums.drop(2) == RArray<int>{30, 40}));
+  assert((nums.reverse() == RArray<int>{40, 30, 20, 1}));
+  assert(nums.min().has_value());
+  assert(*nums.min() == 1);
+  assert(nums.max().has_value());
+  assert(*nums.max() == 40);
+  assert(nums.minmax().has_value());
+  assert((*nums.minmax() == std::pair<int, int>{1, 40}));
+  assert(nums.sum() == 91);
+  assert(nums.product() == 24000);
+
+  RArray<i64> longs{2, 3, 4};
+  static_assert(HasSum<decltype(longs)>::value);
+  static_assert(HasProduct<decltype(longs)>::value);
+  assert(longs.sum() == 9);
+  assert(longs.product() == 24);
+
+  RArray<int> empty_nums;
+  assert(!empty_nums.first().has_value());
+  assert(!empty_nums.last().has_value());
+  assert(!empty_nums.min().has_value());
+  assert(!empty_nums.max().has_value());
+  assert(!empty_nums.minmax().has_value());
+  assert(empty_nums.sum() == 0);
+  assert(empty_nums.product() == 1);
 
   RArray<std::string> words(2, "x");
   words.emplace_back("y");
   assert(words[0] == "x");
   assert(words[2] == "y");
   assert(words[-1] == "y");
+  assert(words.count("x") == 2);
+  assert(words.include("y"));
+  assert((words.take(2) == RArray<std::string>{"x", "x"}));
+  assert((words.drop(2) == RArray<std::string>{"y"}));
+  assert((words.reverse() == RArray<std::string>{"y", "x", "x"}));
+  assert(words.min().has_value());
+  assert(*words.min() == "x");
+  assert(words.max().has_value());
+  assert(*words.max() == "y");
+  static_assert(!HasSum<decltype(words)>::value);
+  static_assert(!HasProduct<decltype(words)>::value);
 
 #ifndef ONLINE_JUDGE
   bool mutable_out_of_range = false;
