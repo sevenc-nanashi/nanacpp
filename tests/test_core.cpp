@@ -6,6 +6,18 @@ int main() {
   let data = Vec<int>{1, 2, 3};
   assert(sz(data) == 3);
 
+  Vec<int> unsorted{3, 1, 2};
+  std::sort(all(unsorted));
+  assert((unsorted == Vec<int>{1, 2, 3}));
+  std::sort(rall(unsorted));
+  assert((unsorted == Vec<int>{3, 2, 1}));
+
+  int best = 10;
+  chmax(best, 20);
+  assert(best == 20);
+  chmin(best, 5);
+  assert(best == 5);
+
   int sum = 0;
   each(x, data) { sum += x; }
   assert(sum == 6);

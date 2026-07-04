@@ -5,8 +5,8 @@
 // ! features
 
 fn main() -> int {
-  cin.tie(0)->sync_with_stdio(0);
-  cout << fixed << setprecision(15);
+  std::cin.tie(0)->sync_with_stdio(0);
+  std::cout << std::fixed << std::setprecision(15);
 
   // your code here...
 }

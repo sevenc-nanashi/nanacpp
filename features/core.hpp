@@ -31,11 +31,11 @@
 #define range(i, l, r) for (int i = (l); i < (r); ++i)
 #define rangei(i, l, r) for (int i = (l); i <= (r); ++i)
 
-#define chmax(var, val) var = std::max(var, val)
-#define chmin(var, val) var = std::min(var, val)
+#define chmax(var, val) (var) = std::max((var), (val))
+#define chmin(var, val) (var) = std::min((var), (val))
 
-#define all(x) begin(x), end(x)
-#define rall(x) rbegin(x), rend(x)
+#define all(x) std::begin(x), std::end(x)
+#define rall(x) std::rbegin(x), std::rend(x)
 #define sz(x) ((i64)(x).size())
 
 using ll = long long;
