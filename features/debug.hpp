@@ -10,9 +10,7 @@ std::ostream &operator<<(std::ostream &os, const std::pair<T, U> &p) {
   return os;
 }
 
-std::ostream &
-operator<<(std::ostream &os, // NOLINT: いうて1ファイルにまとまるし...
-           const u128 &v) {
+std::ostream &operator<<(std::ostream &os, const u128 &v) {
   u128 temp = v;
   if (temp == 0) {
     os << '0';
@@ -28,9 +26,7 @@ operator<<(std::ostream &os, // NOLINT: いうて1ファイルにまとまるし
   return os;
 }
 
-std::ostream &
-operator<<(std::ostream &os, // NOLINT: いうて1ファイルにまとまるし...
-           const i128 &v) {
+std::ostream &operator<<(std::ostream &os, const i128 &v) {
   if (v >= 0) {
     return os << static_cast<u128>(v);
   } else {

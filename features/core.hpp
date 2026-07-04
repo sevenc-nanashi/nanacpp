@@ -58,7 +58,7 @@ using f64 = double;
 template <typename T, typename Compare = std::less<T>>
 using PriorityQueue = std::priority_queue<T, std::vector<T>, Compare>;
 
-char eol[] = "\n"; // NOLINT: 言うてテンプレにまとまるし...
+char eol[] = "\n";
 
 template <typename T> using Vec = std::vector<T>;
 

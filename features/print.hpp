@@ -2,10 +2,16 @@
 
 #include "features/core.hpp"
 
-void print() { std::cout << "\n"; }
-void print(const std::string &s) { std::cout << s << "\n"; }
-void print(const char *s) { std::cout << s << "\n"; }
-template <typename T> void print(const T &value) { std::cout << value << "\n"; }
+#ifdef ONLINE_JUDGE
+#define NANACPP_PRINT_EOL '\n'
+#else
+#define NANACPP_PRINT_EOL std::endl
+#endif
+
+void print() { std::cout << NANACPP_PRINT_EOL; }
+void print(const std::string &s) { std::cout << s << NANACPP_PRINT_EOL; }
+void print(const char *s) { std::cout << s << NANACPP_PRINT_EOL; }
+template <typename T> void print(const T &value) { std::cout << value << NANACPP_PRINT_EOL; }
 template <typename T> void print(const std::vector<T> &vec) {
   enumerate(x, i, vec) {
     std::cout << x;
@@ -13,7 +19,7 @@ template <typename T> void print(const std::vector<T> &vec) {
       std::cout << " ";
     }
   }
-  std::cout << "\n";
+  std::cout << NANACPP_PRINT_EOL;
 }
 template <typename T, typename... Args>
 void print(const T &first, const Args &...args) {
@@ -22,7 +28,7 @@ void print(const T &first, const Args &...args) {
     std::cout << " ";
     print(args...);
   } else {
-    std::cout << "\n";
+    std::cout << NANACPP_PRINT_EOL;
   }
 }
 template <typename T>
@@ -33,5 +39,5 @@ void print(const std::vector<T> &vec, const std::string &sep) {
       std::cout << sep;
     }
   }
-  std::cout << "\n";
+  std::cout << NANACPP_PRINT_EOL;
 }
