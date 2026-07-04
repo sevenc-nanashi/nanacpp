@@ -3,9 +3,9 @@
 #include "features/core.hpp"
 #include <source_location>
 
-/// ローカル実行時のみ `operator[]` の範囲外アクセスを検出する `std::vector`。
+/// Ruby風の配列。
 template <typename T, typename Allocator = std::allocator<T>>
-class BacktraceVec : public std::vector<T, Allocator> {
+class RArray : public std::vector<T, Allocator> {
 private:
   using Base = std::vector<T, Allocator>;
 

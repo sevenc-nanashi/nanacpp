@@ -1,11 +1,11 @@
-#include "features/backtrace_vec.hpp"
+#include "features/rarray.hpp"
 
 #include <cassert>
 #include <stdexcept>
 #include <string>
 
 int main() {
-  BacktraceVec<int> nums{1, 2, 3};
+  RArray<int> nums{1, 2, 3};
 
   assert(nums.size() == 3);
   assert(nums[0] == 1);
@@ -15,10 +15,10 @@ int main() {
   nums.push_back(40);
   assert((nums == std::vector<int>{1, 20, 3, 40}));
 
-  const BacktraceVec<int> const_nums = nums;
+  const RArray<int> const_nums = nums;
   assert(const_nums[3] == 40);
 
-  BacktraceVec<std::string> words(2, "x");
+  RArray<std::string> words(2, "x");
   words.emplace_back("y");
   assert(words[0] == "x");
   assert(words[2] == "y");
