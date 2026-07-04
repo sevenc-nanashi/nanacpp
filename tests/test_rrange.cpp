@@ -53,5 +53,13 @@ int main() {
   assert(negative.include(-1));
   assert((negative.to_vec() == std::vector<int>{-2, -1, 0, 1, 2}));
 
+  assert(rrange(1, 5).overlaps(rrange(5, 8)));
+  assert(rrange(1, 5).overlaps(rexrange(5, 8)));
+  assert(rexrange(1, 5).overlaps(rrange(4, 8)));
+  assert(!rexrange(1, 5).overlaps(rrange(5, 8)));
+  assert(!rrange(1, 4).overlaps(rrange(5, 8)));
+  assert(!rexrange(3, 3).overlaps(rrange(3, 5)));
+  assert(!rrange(3, 5).overlaps(rexrange(3, 3)));
+
   return 0;
 }
