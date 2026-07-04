@@ -14,10 +14,10 @@ public:
   explicit Imos(usize n) : diff(n + 1, 0), built_values(n, 0), ready(false) {}
 
   /// 配列の長さを返す。
-  usize size() const { return built_values.size(); }
+  fn size() const -> usize { return built_values.size(); }
 
   /// 区間 [l, r) に `value` を加算する。
-  void add(usize l, usize r, const T &value) {
+  fn add(usize l, usize r, const T &value) -> void {
     assert(l <= r);
     assert(l <= size());
     assert(r <= size());
@@ -27,14 +27,14 @@ public:
   }
 
   /// 区間 [l, r] に `value` を加算する。
-  void add_closed(usize l, usize r, const T &value) {
+  fn add_closed(usize l, usize r, const T &value) -> void {
     assert(l <= r);
     assert(r < size());
     add(l, r + 1, value);
   }
 
   /// 累積して最終的な配列を構築し、参照を返す。複数回呼ぶと結果をキャッシュする。
-  [[nodiscard]] const std::vector<T> &build() {
+  [[nodiscard]] fn build() -> const std::vector<T> & {
     if (!ready) {
       T run = 0;
       for (usize i = 0; i < size(); ++i) {
@@ -47,19 +47,19 @@ public:
   }
 
   /// 構築済みの値を取得する。`build` を事前に呼ぶ必要がある。
-  [[nodiscard]] const std::vector<T> &values() const {
+  [[nodiscard]] fn values() const -> const std::vector<T> & {
     assert(ready);
     return built_values;
   }
 
   /// 構築済みの値へのランダムアクセス。`build` を事前に呼ぶ必要がある。
-  [[nodiscard]] const T &operator[](usize idx) const {
+  [[nodiscard]] fn operator[](usize idx) const->const T & {
     assert(ready);
     return built_values[idx];
   }
 
   /// 基底配列に差分を適用した新しい配列を返す。
-  std::vector<T> applied(std::vector<T> base) {
+  fn applied(std::vector<T> base) -> std::vector<T> {
     assert(base.size() == size());
     const auto &delta = build();
     for (usize i = 0; i < size(); ++i) {

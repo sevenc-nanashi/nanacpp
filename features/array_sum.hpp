@@ -18,10 +18,12 @@ public:
   }
 
   /// 区間 [l, r) の和を返す
-  T sum(size_t l, size_t r) const { return prefix_sum[r] - prefix_sum[l]; }
+  fn sum(size_t l, size_t r) const -> T {
+    return prefix_sum[r] - prefix_sum[l];
+  }
 
   /// 区間 [l, r] の和を返す
-  T sum_closed(size_t l, size_t r) const {
+  fn sum_closed(size_t l, size_t r) const -> T {
     return prefix_sum[r + 1] - prefix_sum[l];
   }
 };

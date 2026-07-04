@@ -17,9 +17,9 @@ private:
 
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
   template <typename Index>
-  [[noreturn]] static void
+  [[noreturn]] static fn
   throw_out_of_range(Index index, typename Base::size_type size,
-                     const std::source_location &location) {
+                     const std::source_location &location) -> void {
     std::ostringstream oss;
     oss << "RArray index out of range: index=" << index << ", size=" << size
         << ", called from " << location.file_name() << ":" << location.line()
@@ -28,8 +28,9 @@ private:
   }
 #else
   template <typename Index>
-  [[noreturn]] static void throw_out_of_range(Index index,
-                                              typename Base::size_type size) {
+  [[noreturn]] static fn throw_out_of_range(Index index,
+                                            typename Base::size_type size)
+      -> void {
     std::ostringstream oss;
     oss << "RArray index out of range: index=" << index << ", size=" << size;
     throw std::out_of_range(oss.str());
@@ -37,8 +38,8 @@ private:
 #endif
 
   template <typename Index>
-  static typename Base::size_type
-  normalize_index(Index index, typename Base::size_type size) {
+  static fn normalize_index(Index index, typename Base::size_type size) ->
+      typename Base::size_type {
     using difference_type = typename Base::difference_type;
     const difference_type signed_size = static_cast<difference_type>(size);
     const difference_type signed_index = static_cast<difference_type>(index);
@@ -61,8 +62,8 @@ private:
 
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
   template <typename Range>
-  RArray slice_by_range(const Range &range,
-                        const std::source_location &location) const {
+  fn slice_by_range(const Range &range,
+                    const std::source_location &location) const -> RArray {
     if (range.empty()) {
       return RArray();
     }
@@ -85,7 +86,8 @@ private:
     return RArray(this->begin() + first_index, this->begin() + end_index);
   }
 #else
-  template <typename Range> RArray slice_by_range(const Range &range) const {
+  template <typename Range>
+  fn slice_by_range(const Range &range) const -> RArray {
     if (range.empty()) {
       return RArray();
     }
@@ -119,9 +121,9 @@ public:
   using Base::Base;
 
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
-  reference
-  operator[](size_type index,
-             std::source_location location = std::source_location::current()) {
+  fn operator[](size_type index,
+                std::source_location location = std::source_location::current())
+      ->reference {
 #ifndef ONLINE_JUDGE
     if (index >= this->size()) {
       throw_out_of_range(index, this->size(), location);
@@ -130,9 +132,9 @@ public:
     return Base::operator[](index);
   }
 
-  const_reference operator[](
-      size_type index,
-      std::source_location location = std::source_location::current()) const {
+  fn operator[](size_type index,
+                std::source_location location =
+                    std::source_location::current()) const->const_reference {
 #ifndef ONLINE_JUDGE
     if (index >= this->size()) {
       throw_out_of_range(index, this->size(), location);
@@ -143,9 +145,9 @@ public:
 
   template <typename Index,
             typename = std::enable_if_t<std::is_signed_v<Index>>>
-  reference
-  operator[](Index index,
-             std::source_location location = std::source_location::current()) {
+  fn operator[](Index index,
+                std::source_location location = std::source_location::current())
+      ->reference {
     const size_type normalized_index = normalize_index(index, this->size());
 #ifndef ONLINE_JUDGE
     if (normalized_index >= this->size()) {
@@ -157,9 +159,9 @@ public:
 
   template <typename Index,
             typename = std::enable_if_t<std::is_signed_v<Index>>>
-  const_reference operator[](
-      Index index,
-      std::source_location location = std::source_location::current()) const {
+  fn operator[](Index index,
+                std::source_location location =
+                    std::source_location::current()) const->const_reference {
     const size_type normalized_index = normalize_index(index, this->size());
 #ifndef ONLINE_JUDGE
     if (normalized_index >= this->size()) {
@@ -170,13 +172,13 @@ public:
   }
 
   template <typename Range, typename = RangeLike<Range>>
-  RArray operator[](
-      const Range &range,
-      std::source_location location = std::source_location::current()) const {
+  fn operator[](const Range &range,
+                std::source_location location =
+                    std::source_location::current()) const->RArray {
     return slice_by_range(range, location);
   }
 #else
-  reference operator[](size_type index) {
+  fn operator[](size_type index)->reference {
 #ifndef ONLINE_JUDGE
     if (index >= this->size()) {
       throw_out_of_range(index, this->size());
@@ -185,7 +187,7 @@ public:
     return Base::operator[](index);
   }
 
-  const_reference operator[](size_type index) const {
+  fn operator[](size_type index) const->const_reference {
 #ifndef ONLINE_JUDGE
     if (index >= this->size()) {
       throw_out_of_range(index, this->size());
@@ -196,7 +198,7 @@ public:
 
   template <typename Index,
             typename = std::enable_if_t<std::is_signed<Index>::value>>
-  reference operator[](Index index) {
+  fn operator[](Index index)->reference {
     const size_type normalized_index = normalize_index(index, this->size());
 #ifndef ONLINE_JUDGE
     if (normalized_index >= this->size()) {
@@ -208,7 +210,7 @@ public:
 
   template <typename Index,
             typename = std::enable_if_t<std::is_signed<Index>::value>>
-  const_reference operator[](Index index) const {
+  fn operator[](Index index) const->const_reference {
     const size_type normalized_index = normalize_index(index, this->size());
 #ifndef ONLINE_JUDGE
     if (normalized_index >= this->size()) {
@@ -219,62 +221,62 @@ public:
   }
 
   template <typename Range, typename = RangeLike<Range>>
-  RArray operator[](const Range &range) const {
+  fn operator[](const Range &range) const->RArray {
     return slice_by_range(range);
   }
 #endif
 
-  std::optional<T> first() const {
+  fn first() const -> std::optional<T> {
     if (this->empty()) {
       return std::nullopt;
     }
     return Base::front();
   }
 
-  std::optional<T> last() const {
+  fn last() const -> std::optional<T> {
     if (this->empty()) {
       return std::nullopt;
     }
     return Base::back();
   }
 
-  bool include(const T &value) const {
+  fn include(const T &value) const -> bool {
     return std::find(this->begin(), this->end(), value) != this->end();
   }
 
-  size_type count(const T &value) const {
+  fn count(const T &value) const -> size_type {
     return static_cast<size_type>(
         std::count(this->begin(), this->end(), value));
   }
 
-  RArray take(size_type count) const {
+  fn take(size_type count) const -> RArray {
     const size_type take_count = std::min(count, this->size());
     return RArray(this->begin(), this->begin() + take_count);
   }
 
-  RArray drop(size_type count) const {
+  fn drop(size_type count) const -> RArray {
     const size_type drop_count = std::min(count, this->size());
     return RArray(this->begin() + drop_count, this->end());
   }
 
-  RArray reverse() const {
+  fn reverse() const -> RArray {
     RArray result(this->rbegin(), this->rend());
     return result;
   }
 
-  RArray sort() const {
+  fn sort() const -> RArray {
     RArray result = *this;
     std::sort(result.begin(), result.end());
     return result;
   }
 
-  RArray sort_desc() const {
+  fn sort_desc() const -> RArray {
     RArray result = *this;
     std::sort(result.begin(), result.end(), std::greater<T>());
     return result;
   }
 
-  template <typename F> RArray sort_by(F &&selector) const {
+  template <typename F> fn sort_by(F &&selector) const -> RArray {
     RArray result = *this;
     std::sort(result.begin(), result.end(), [&](const auto &a, const auto &b) {
       return std::invoke(selector, a) < std::invoke(selector, b);
@@ -282,7 +284,7 @@ public:
     return result;
   }
 
-  template <typename F> RArray sort_by_desc(F &&selector) const {
+  template <typename F> fn sort_by_desc(F &&selector) const -> RArray {
     RArray result = *this;
     std::sort(result.begin(), result.end(), [&](const auto &a, const auto &b) {
       return std::invoke(selector, a) > std::invoke(selector, b);
@@ -290,9 +292,9 @@ public:
     return result;
   }
 
-  RArray dup() const { return RArray(this->begin(), this->end()); }
+  fn dup() const -> RArray { return RArray(this->begin(), this->end()); }
 
-  Map<T, size_type> tally() const {
+  fn tally() const -> Map<T, size_type> {
     Map<T, size_type> counts;
     for (const auto &value : *this) {
       ++counts[value];
@@ -300,16 +302,16 @@ public:
     return counts;
   }
 
-  std::vector<T> to_vec() const {
+  fn to_vec() const -> std::vector<T> {
     return std::vector<T>(this->begin(), this->end());
   }
-  std::vector<T> into_vec() && {
+  fn into_vec() && -> std::vector<T> {
     return std::vector<T>(std::make_move_iterator(this->begin()),
                           std::make_move_iterator(this->end()));
   }
 
   template <typename U = T, typename = Comparable<U>>
-  std::optional<T> min() const {
+  fn min() const -> std::optional<T> {
     if (this->empty()) {
       return std::nullopt;
     }
@@ -317,7 +319,7 @@ public:
   }
 
   template <typename U = T, typename = Comparable<U>>
-  std::optional<T> max() const {
+  fn max() const -> std::optional<T> {
     if (this->empty()) {
       return std::nullopt;
     }
@@ -325,7 +327,7 @@ public:
   }
 
   template <typename U = T, typename = Comparable<U>>
-  std::optional<std::pair<T, T>> minmax() const {
+  fn minmax() const -> std::optional<std::pair<T, T>> {
     if (this->empty()) {
       return std::nullopt;
     }
@@ -334,18 +336,18 @@ public:
     return std::pair<T, T>{*min_it, *max_it};
   }
 
-  template <typename U = T, typename = Numeric<U>> T sum() const {
+  template <typename U = T, typename = Numeric<U>> fn sum() const -> T {
     return std::accumulate(this->begin(), this->end(), static_cast<T>(0));
   }
 
-  template <typename U = T, typename = Numeric<U>> T product() const {
+  template <typename U = T, typename = Numeric<U>> fn product() const -> T {
     return std::accumulate(this->begin(), this->end(), static_cast<T>(1),
                            std::multiplies<T>());
   }
 };
 
 template <typename T>
-std::ostream &operator<<(std::ostream &os, const RArray<T> &v) {
+fn operator<<(std::ostream &os, const RArray<T> &v)->std::ostream & {
   os << "[";
   for (usize i = 0; i < v.size(); ++i) {
     os << v[i];

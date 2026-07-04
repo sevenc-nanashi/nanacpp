@@ -8,11 +8,13 @@
 #define NANACPP_PRINT_EOL std::endl
 #endif
 
-void print() { std::cout << NANACPP_PRINT_EOL; }
-void print(const std::string &s) { std::cout << s << NANACPP_PRINT_EOL; }
-void print(const char *s) { std::cout << s << NANACPP_PRINT_EOL; }
-template <typename T> void print(const T &value) { std::cout << value << NANACPP_PRINT_EOL; }
-template <typename T> void print(const std::vector<T> &vec) {
+fn print() -> void { std::cout << NANACPP_PRINT_EOL; }
+fn print(const std::string &s) -> void { std::cout << s << NANACPP_PRINT_EOL; }
+fn print(const char *s) -> void { std::cout << s << NANACPP_PRINT_EOL; }
+template <typename T> fn print(const T &value) -> void {
+  std::cout << value << NANACPP_PRINT_EOL;
+}
+template <typename T> fn print(const std::vector<T> &vec) -> void {
   enumerate(x, i, vec) {
     std::cout << x;
     if (i + 1 != vec.size()) {
@@ -22,7 +24,7 @@ template <typename T> void print(const std::vector<T> &vec) {
   std::cout << NANACPP_PRINT_EOL;
 }
 template <typename T, typename... Args>
-void print(const T &first, const Args &...args) {
+fn print(const T &first, const Args &...args) -> void {
   std::cout << first;
   if constexpr (sizeof...(args) > 0) {
     std::cout << " ";
@@ -32,7 +34,7 @@ void print(const T &first, const Args &...args) {
   }
 }
 template <typename T>
-void print(const std::vector<T> &vec, const std::string &sep) {
+fn print(const std::vector<T> &vec, const std::string &sep) -> void {
   enumerate(x, i, vec) {
     std::cout << x;
     if (i + 1 != vec.size()) {

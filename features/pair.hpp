@@ -12,7 +12,7 @@ public:
   /// 値を受け取るコンストラクタ。
   hpair(const T &f, const U &s) : first(f), second(s) {}
   /// 等価比較。
-  bool operator==(const hpair<T, U> &other) const {
+  fn operator==(const hpair<T, U> &other) const->bool {
     return first == other.first && second == other.second;
   }
 };
@@ -20,7 +20,7 @@ public:
 namespace std {
 /// `hpair` を unordered 系コンテナで使うためのハッシュ。
 template <typename T, typename U> struct hash<hpair<T, U>> {
-  size_t operator()(const hpair<T, U> &p) const {
+  fn operator()(const hpair<T, U> &p) const->size_t {
     return hash<T>()(p.first) ^ (hash<U>()(p.second) << 1);
   }
 };

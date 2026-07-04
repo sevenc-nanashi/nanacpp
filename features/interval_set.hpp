@@ -11,10 +11,10 @@ public:
   IntervalSet() = default;
 
   /// 現在保持している非交差の区間集合への参照を返す。
-  const std::set<std::pair<T, T>> &intervals() const { return segs; }
+  fn intervals() const -> const std::set<std::pair<T, T>> & { return segs; }
 
   /// 点 `x` を含む区間を返す。存在しない場合は `std::nullopt`。
-  std::optional<std::pair<T, T>> find(T x) const {
+  fn find(T x) const -> std::optional<std::pair<T, T>> {
     auto it = segs.upper_bound({x, std::numeric_limits<T>::max()});
     if (it == segs.begin()) {
       return std::nullopt;
@@ -28,7 +28,7 @@ public:
 
   /// 半開区間 `[l, r)` を追加し、新たに被覆された長さを返す。
   /// `l >= r` の場合は何もせず 0 を返す。
-  T add(T l, T r) {
+  fn add(T l, T r) -> T {
     if (l >= r) {
       return static_cast<T>(0);
     }
@@ -67,7 +67,7 @@ public:
 
   /// 半開区間 `[l, r)` を削除し、減少した被覆長を返す。
   /// `l >= r` の場合は何もせず 0 を返す。
-  T remove(T l, T r) {
+  fn remove(T l, T r) -> T {
     if (l >= r) {
       return static_cast<T>(0);
     }

@@ -4,7 +4,7 @@
 
 /// コンテナ内の要素に対してFを適用したものを返す。
 template <typename T, typename F, typename V>
-std::vector<T> vec_map(const V &vec, F &&func) {
+fn vec_map(const V &vec, F &&func) -> std::vector<T> {
   std::vector<T> result;
   result.reserve(sz(vec));
   each(x, vec) { result.push_back(func(x)); }
@@ -12,6 +12,6 @@ std::vector<T> vec_map(const V &vec, F &&func) {
 }
 
 /// コンテナ内の要素をFによって変換する。
-template <typename F, typename V> void vec_map_inplace(V &vec, F &&func) {
+template <typename F, typename V> fn vec_map_inplace(V &vec, F &&func) -> void {
   each(x, vec) { x = func(x); }
 }

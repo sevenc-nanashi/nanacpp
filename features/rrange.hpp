@@ -1,7 +1,7 @@
 #pragma once
 
-#include "features/rarray.hpp"
 #include "features/core.hpp"
+#include "features/rarray.hpp"
 
 /// Ruby風の整数Range。
 template <typename T> class RRange {
@@ -22,9 +22,9 @@ private:
 
     explicit Iterator(T value) : value(value) {}
 
-    T operator*() const { return value; }
+    fn operator*() const->T { return value; }
 
-    Iterator &operator++() {
+    fn operator++()->Iterator & {
       ++value;
       return *this;
     }
@@ -39,7 +39,7 @@ private:
     Sentinel(T last_value, bool exclude_last_value)
         : last_value(last_value), exclude_last_value(exclude_last_value) {}
 
-    friend bool operator!=(const Iterator &it, const Sentinel &sentinel) {
+    friend fn operator!=(const Iterator &it, const Sentinel &sentinel)->bool {
       if (sentinel.exclude_last_value) {
         return *it < sentinel.last_value;
       }
@@ -52,24 +52,26 @@ public:
       : first_value(first), last_value(last), exclude_last_value(exclude_last) {
   }
 
-  static RRange inclusive(T first, T last) { return RRange(first, last); }
+  static fn inclusive(T first, T last) -> RRange { return RRange(first, last); }
 
-  static RRange exclusive(T first, T last) { return RRange(first, last, true); }
+  static fn exclusive(T first, T last) -> RRange {
+    return RRange(first, last, true);
+  }
 
-  T first() const { return first_value; }
+  fn first() const -> T { return first_value; }
 
-  T last() const { return last_value; }
+  fn last() const -> T { return last_value; }
 
-  bool exclude_last() const { return exclude_last_value; }
+  fn exclude_last() const -> bool { return exclude_last_value; }
 
-  bool empty() const {
+  fn empty() const -> bool {
     if (first_value > last_value) {
       return true;
     }
     return exclude_last_value && first_value == last_value;
   }
 
-  bool include(T value) const {
+  fn include(T value) const -> bool {
     if (value < first_value) {
       return false;
     }
@@ -79,7 +81,7 @@ public:
     return value <= last_value;
   }
 
-  bool overlaps(const RRange &other) const {
+  fn overlaps(const RRange &other) const -> bool {
     if (empty() || other.empty()) {
       return false;
     }
@@ -89,7 +91,7 @@ public:
              other.last_value < first_value);
   }
 
-  usize size() const {
+  fn size() const -> usize {
     if (empty()) {
       return 0;
     }
@@ -101,7 +103,7 @@ public:
     return static_cast<usize>(count);
   }
 
-  std::vector<T> to_vec() const {
+  fn to_vec() const -> std::vector<T> {
     std::vector<T> result;
     result.reserve(size());
     for (T value : *this) {
@@ -110,7 +112,7 @@ public:
     return result;
   }
 
-  RArray<T> to_rarray() const {
+  fn to_rarray() const -> RArray<T> {
     RArray<T> result;
     result.reserve(size());
     for (T value : *this) {
@@ -119,17 +121,19 @@ public:
     return result;
   }
 
-  Iterator begin() const { return Iterator(first_value); }
+  fn begin() const -> Iterator { return Iterator(first_value); }
 
-  Sentinel end() const { return Sentinel(last_value, exclude_last_value); }
+  fn end() const -> Sentinel {
+    return Sentinel(last_value, exclude_last_value);
+  }
 };
 
 /// [first, last] の範囲を表す RRange を作成する。
-template <typename T> RRange<T> rrange(T first, T last) {
+template <typename T> fn rrange(T first, T last) -> RRange<T> {
   return RRange<T>::inclusive(first, last);
 }
 
 /// [first, last) の範囲を表す RRange を作成する。
-template <typename T> RRange<T> rexrange(T first, T last) {
+template <typename T> fn rexrange(T first, T last) -> RRange<T> {
   return RRange<T>::exclusive(first, last);
 }

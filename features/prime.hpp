@@ -9,7 +9,7 @@ private:
   std::vector<int> primes_vec;
   std::vector<int> least_prime;
 
-  void build() {
+  fn build() -> void {
     if (limit >= 0)
       least_prime[0] = 0;
     if (limit >= 1)
@@ -44,25 +44,25 @@ public:
   PrimeSieve &operator=(PrimeSieve &&) = default;
 
   /// 篩の最大値（構築時の `n`）を返す。
-  int max_n() const { return limit; }
+  fn max_n() const -> int { return limit; }
 
   /// `n` 以下の素数リストを返す。
-  const std::vector<int> &primes() const { return primes_vec; }
+  fn primes() const -> const std::vector<int> & { return primes_vec; }
 
   /// `n` が素数か判定する。
-  bool is_prime(int n) const {
+  fn is_prime(int n) const -> bool {
     assert(0 <= n && n <= limit);
     return n >= 2 && least_prime[n] == n;
   }
 
   /// `n` の最小素因数を返す。
-  int least_factor(int n) const {
+  fn least_factor(int n) const -> int {
     assert(1 <= n && n <= limit);
     return least_prime[n];
   }
 
   /// `n`（`n <= limit`）を素因数分解し、素因数と指数の組を返す。
-  std::vector<std::pair<int, int>> factorize_bounded(int n) const {
+  fn factorize_bounded(int n) const -> std::vector<std::pair<int, int>> {
     assert(1 <= n && n <= limit);
     std::vector<std::pair<int, int>> factors;
     while (n > 1) {
@@ -78,7 +78,7 @@ public:
   }
 
   /// `n` を素因数分解する（`n <= limit^2` が前提）。
-  std::vector<std::pair<ll, int>> factorize(ll n) const {
+  fn factorize(ll n) const -> std::vector<std::pair<ll, int>> {
     assert(n >= 1);
     assert(1LL * limit * limit >= n);
     std::vector<std::pair<ll, int>> factors;

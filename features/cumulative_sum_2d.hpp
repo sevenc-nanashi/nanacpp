@@ -24,13 +24,13 @@ public:
   }
 
   /// 行数を返す。
-  usize rows() const { return height; }
+  fn rows() const -> usize { return height; }
 
   /// 列数を返す。
-  usize cols() const { return width; }
+  fn cols() const -> usize { return width; }
 
   /// 長方形 [top, bottom) × [left, right) の和を返す。
-  T sum(usize top, usize left, usize bottom, usize right) const {
+  fn sum(usize top, usize left, usize bottom, usize right) const -> T {
     assert(top <= bottom);
     assert(left <= right);
     assert(bottom <= height);
@@ -40,7 +40,7 @@ public:
   }
 
   /// 長方形 [top, bottom] × [left, right] の和を返す。
-  T sum_closed(usize top, usize left, usize bottom, usize right) const {
+  fn sum_closed(usize top, usize left, usize bottom, usize right) const -> T {
     assert(bottom < height);
     assert(right < width);
     return sum(top, left, bottom + 1, right + 1);

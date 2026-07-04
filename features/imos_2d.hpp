@@ -18,13 +18,14 @@ public:
         built_values(h, std::vector<T>(w, 0)), ready(false) {}
 
   /// 行数を返す。
-  usize rows() const { return height; }
+  fn rows() const -> usize { return height; }
 
   /// 列数を返す。
-  usize cols() const { return width; }
+  fn cols() const -> usize { return width; }
 
   /// 長方形 [top, bottom) × [left, right) に `value` を加算する。
-  void add(usize top, usize left, usize bottom, usize right, const T &value) {
+  fn add(usize top, usize left, usize bottom, usize right, const T &value)
+      -> void {
     assert(top <= bottom);
     assert(left <= right);
     assert(bottom <= height);
@@ -37,8 +38,8 @@ public:
   }
 
   /// 長方形 [top, bottom] × [left, right] に `value` を加算する。
-  void add_closed(usize top, usize left, usize bottom, usize right,
-                  const T &value) {
+  fn add_closed(usize top, usize left, usize bottom, usize right,
+                const T &value) -> void {
     assert(bottom < height);
     assert(right < width);
     add(top, left, bottom + 1, right + 1, value);
@@ -46,7 +47,7 @@ public:
 
   /// 累積して最終的な 2
   /// 次元配列を構築し、参照を返す。複数回呼ぶと結果をキャッシュする。
-  [[nodiscard]] const std::vector<std::vector<T>> &build() {
+  [[nodiscard]] fn build() -> const std::vector<std::vector<T>> & {
     if (!ready) {
       std::vector<std::vector<T>> acc(height + 1, std::vector<T>(width + 1, 0));
       for (usize y = 0; y <= height; ++y) {
@@ -73,19 +74,19 @@ public:
   }
 
   /// 構築済みの値を取得する。`build` を事前に呼ぶ必要がある。
-  [[nodiscard]] const std::vector<std::vector<T>> &values() const {
+  [[nodiscard]] fn values() const -> const std::vector<std::vector<T>> & {
     assert(ready);
     return built_values;
   }
 
   /// 構築済みの値への行アクセス。`build` を事前に呼ぶ必要がある。
-  const std::vector<T> &operator[](usize row) const {
+  fn operator[](usize row) const->const std::vector<T> & {
     assert(ready);
     return built_values[row];
   }
 
   /// 基底の 2 次元配列に差分を適用した新しい配列を返す。
-  std::vector<std::vector<T>> applied(std::vector<std::vector<T>> base) {
+  fn applied(std::vector<std::vector<T>> base) -> std::vector<std::vector<T>> {
     assert(base.size() == height);
     for (const auto &row : base) {
       assert(row.size() == width);

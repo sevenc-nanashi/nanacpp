@@ -5,7 +5,7 @@
 template <typename F>
 /// 半開区間 `[l, r)` で `cond(i)` が真になる最初の `i` を返す。
 /// 存在しなければ `std::nullopt` を返す。
-std::optional<i64> bisect_first(i64 l, i64 r, F &&cond) {
+fn bisect_first(i64 l, i64 r, F &&cond) -> std::optional<i64> {
   if (cond(l)) {
     return l;
   }
@@ -29,14 +29,14 @@ std::optional<i64> bisect_first(i64 l, i64 r, F &&cond) {
 template <typename F>
 /// 閉区間 `[l, r]` で `cond(i)` が真になる最初の `i` を返す。
 /// 存在しなければ `std::nullopt` を返す。
-std::optional<i64> bisect_first_closed(i64 l, i64 r, F &&cond) {
+fn bisect_first_closed(i64 l, i64 r, F &&cond) -> std::optional<i64> {
   return bisect_first(l, r + 1, cond);
 }
 
 template <typename F>
 /// 半開区間 `[l, r)` で `cond(i)` が真になる最後の `i` を返す。
 /// 存在しなければ `std::nullopt` を返す。
-std::optional<i64> bisect_last(i64 l, i64 r, F &&cond) {
+fn bisect_last(i64 l, i64 r, F &&cond) -> std::optional<i64> {
   if (!cond(l)) {
     return std::nullopt;
   }
@@ -60,6 +60,6 @@ std::optional<i64> bisect_last(i64 l, i64 r, F &&cond) {
 template <typename F>
 /// 閉区間 `[l, r]` で `cond(i)` が真になる最後の `i` を返す。
 /// 存在しなければ `std::nullopt` を返す。
-std::optional<i64> bisect_last_closed(i64 l, i64 r, F &&cond) {
+fn bisect_last_closed(i64 l, i64 r, F &&cond) -> std::optional<i64> {
   return bisect_last(l, r + 1, cond);
 }

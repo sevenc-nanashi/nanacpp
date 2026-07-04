@@ -5,12 +5,12 @@
 
 /// `std::pair` を `(first, second)` 形式で出力する。
 template <typename T, typename U>
-std::ostream &operator<<(std::ostream &os, const std::pair<T, U> &p) {
+fn operator<<(std::ostream &os, const std::pair<T, U> &p)->std::ostream & {
   os << "(" << p.first << ", " << p.second << ")";
   return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const u128 &v) {
+fn operator<<(std::ostream &os, const u128 &v)->std::ostream & {
   u128 temp = v;
   if (temp == 0) {
     os << '0';
@@ -26,7 +26,7 @@ std::ostream &operator<<(std::ostream &os, const u128 &v) {
   return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const i128 &v) {
+fn operator<<(std::ostream &os, const i128 &v)->std::ostream & {
   if (v >= 0) {
     return os << static_cast<u128>(v);
   } else {
@@ -37,7 +37,7 @@ std::ostream &operator<<(std::ostream &os, const i128 &v) {
 
 /// `std::vector` を可読なリスト形式で出力する。
 template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
+fn operator<<(std::ostream &os, const std::vector<T> &v)->std::ostream & {
   os << "[";
   for (usize i = 0; i < v.size(); ++i) {
     os << v[i];
@@ -51,7 +51,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
 
 /// `std::set` を空白区切りで出力する。
 template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::set<T> &v) {
+fn operator<<(std::ostream &os, const std::set<T> &v)->std::ostream & {
   os << "{";
   for (auto it = v.begin(); it != v.end(); ++it) {
     os << *it;
@@ -67,7 +67,8 @@ std::ostream &operator<<(std::ostream &os, const std::set<T> &v) {
 
 /// `std::unordered_set` を空白区切りで出力する。
 template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &v) {
+fn operator<<(std::ostream &os, const std::unordered_set<T> &v)
+    ->std::ostream & {
   os << "{";
   for (auto it = v.begin(); it != v.end(); ++it) {
     os << *it;
@@ -83,7 +84,7 @@ std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &v) {
 
 /// `std::map` を `key: value` の並びで出力する。
 template <typename T, typename U>
-std::ostream &operator<<(std::ostream &os, const std::map<T, U> &m) {
+fn operator<<(std::ostream &os, const std::map<T, U> &m)->std::ostream & {
   os << "{";
   for (auto it = m.begin(); it != m.end(); ++it) {
     os << it->first << ": " << it->second;
@@ -99,7 +100,8 @@ std::ostream &operator<<(std::ostream &os, const std::map<T, U> &m) {
 
 /// `std::unordered_map` を `key: value` の並びで出力する。
 template <typename T, typename U>
-std::ostream &operator<<(std::ostream &os, const std::unordered_map<T, U> &m) {
+fn operator<<(std::ostream &os, const std::unordered_map<T, U> &m)
+    ->std::ostream & {
   os << "{";
   for (auto it = m.begin(); it != m.end(); ++it) {
     os << it->first << ": " << it->second;
