@@ -262,6 +262,52 @@ public:
     return result;
   }
 
+  RArray sort() const {
+    RArray result = *this;
+    std::sort(result.begin(), result.end());
+    return result;
+  }
+
+  RArray sort_desc() const {
+    RArray result = *this;
+    std::sort(result.begin(), result.end(), std::greater<T>());
+    return result;
+  }
+
+  template <typename F> RArray sort_by(F &&selector) const {
+    RArray result = *this;
+    std::sort(result.begin(), result.end(), [&](const auto &a, const auto &b) {
+      return std::invoke(selector, a) < std::invoke(selector, b);
+    });
+    return result;
+  }
+
+  template <typename F> RArray sort_by_desc(F &&selector) const {
+    RArray result = *this;
+    std::sort(result.begin(), result.end(), [&](const auto &a, const auto &b) {
+      return std::invoke(selector, a) > std::invoke(selector, b);
+    });
+    return result;
+  }
+
+  RArray dup() const { return RArray(this->begin(), this->end()); }
+
+  Map<T, size_type> tally() const {
+    Map<T, size_type> counts;
+    for (const auto &value : *this) {
+      ++counts[value];
+    }
+    return counts;
+  }
+
+  std::vector<T> to_vec() const {
+    return std::vector<T>(this->begin(), this->end());
+  }
+  std::vector<T> into_vec() && {
+    return std::vector<T>(std::make_move_iterator(this->begin()),
+                          std::make_move_iterator(this->end()));
+  }
+
   template <typename U = T, typename = Comparable<U>>
   std::optional<T> min() const {
     if (this->empty()) {
@@ -297,6 +343,19 @@ public:
                            std::multiplies<T>());
   }
 };
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const RArray<T> &v) {
+  os << "[";
+  for (usize i = 0; i < v.size(); ++i) {
+    os << v[i];
+    if (i + 1 != v.size()) {
+      os << ", ";
+    }
+  }
+  os << "]";
+  return os;
+}
 
 template <typename T> using RArray2 = RArray<RArray<T>>;
 template <typename T> using RArray3 = RArray<RArray<RArray<T>>>;

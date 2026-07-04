@@ -2,6 +2,7 @@
 #include "features/rrange.hpp"
 
 #include <cassert>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
@@ -53,6 +54,8 @@ int main() {
   assert((nums.take(2) == RArray<int>{1, 20}));
   assert((nums.drop(2) == RArray<int>{30, 40}));
   assert((nums.reverse() == RArray<int>{40, 30, 20, 1}));
+  assert((nums.sort() == RArray<int>{1, 20, 30, 40}));
+  assert((nums == RArray<int>{1, 20, 30, 40}));
   assert(nums.min().has_value());
   assert(*nums.min() == 1);
   assert(nums.max().has_value());
@@ -61,6 +64,29 @@ int main() {
   assert((*nums.minmax() == std::pair<int, int>{1, 40}));
   assert(nums.sum() == 91);
   assert(nums.product() == 24000);
+
+  RArray<int> unordered_nums{3, 1, 4, 1, 5, 9, 2};
+  assert((unordered_nums.sort() == RArray<int>{1, 1, 2, 3, 4, 5, 9}));
+  assert((unordered_nums == RArray<int>{3, 1, 4, 1, 5, 9, 2}));
+
+  auto tally_result = unordered_nums.tally();
+  static_assert(std::is_same_v<decltype(tally_result), Map<int, usize>>);
+  assert(tally_result.at(1) == 2);
+  assert(tally_result.at(2) == 1);
+  assert(tally_result.at(3) == 1);
+  assert(tally_result.at(4) == 1);
+  assert(tally_result.at(5) == 1);
+  assert(tally_result.at(9) == 1);
+  assert(tally_result.size() == 6);
+
+  auto duplicated = unordered_nums.dup();
+  duplicated[0] = 100;
+  assert(unordered_nums[0] == 3);
+  assert(duplicated[0] == 100);
+
+  auto nums_vec = unordered_nums.to_vec();
+  static_assert(std::is_same_v<decltype(nums_vec), std::vector<int>>);
+  assert((nums_vec == std::vector<int>{3, 1, 4, 1, 5, 9, 2}));
 
   RArray<i64> longs{2, 3, 4};
   static_assert(HasSum<decltype(longs)>::value);
@@ -87,12 +113,34 @@ int main() {
   assert((words.take(2) == RArray<std::string>{"x", "x"}));
   assert((words.drop(2) == RArray<std::string>{"y"}));
   assert((words.reverse() == RArray<std::string>{"y", "x", "x"}));
+  assert((words.sort() == RArray<std::string>{"x", "x", "y"}));
   assert(words.min().has_value());
   assert(*words.min() == "x");
   assert(words.max().has_value());
   assert(*words.max() == "y");
   static_assert(!HasSum<decltype(words)>::value);
   static_assert(!HasProduct<decltype(words)>::value);
+
+  RArray<std::pair<std::string, int>> scores{
+      {"alice", 30}, {"bob", 20}, {"carol", 40}};
+  assert((scores.sort_by([](const auto &score) { return score.second; }) ==
+          RArray<std::pair<std::string, int>>{
+              {"bob", 20}, {"alice", 30}, {"carol", 40}}));
+  assert((scores.sort_by_desc([](const auto &score) { return score.second; }) ==
+          RArray<std::pair<std::string, int>>{
+              {"carol", 40}, {"alice", 30}, {"bob", 20}}));
+  assert((scores == RArray<std::pair<std::string, int>>{
+                        {"alice", 30}, {"bob", 20}, {"carol", 40}}));
+
+  RArray<std::string> movable_words{"hello", "world"};
+  auto moved_words = std::move(movable_words).into_vec();
+  static_assert(
+      std::is_same_v<decltype(moved_words), std::vector<std::string>>);
+  assert((moved_words == std::vector<std::string>{"hello", "world"}));
+
+  std::ostringstream oss;
+  oss << unordered_nums;
+  assert(oss.str() == "[3, 1, 4, 1, 5, 9, 2]");
 
 #ifndef ONLINE_JUDGE
   bool mutable_out_of_range = false;
