@@ -15,6 +15,12 @@ class RArray : public std::vector<T, Allocator> {
 private:
   using Base = std::vector<T, Allocator>;
 
+  template <typename F> RArray(size_t size, F &&generator) : Base(size) {
+    for (size_t i = 0; i < size; ++i) {
+      this->operator[](i) = generator(i);
+    }
+  }
+
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
   template <typename Index>
   [[noreturn]] static fn
