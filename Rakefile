@@ -2,6 +2,8 @@
 
 require "fileutils"
 
+CC = ENV["CC"] || "g++-15"
+
 def alias_task(**tasks)
   tasks.each do |new_name, old_name|
     desc "Alias for #{old_name}"
@@ -78,7 +80,7 @@ namespace :tests do
     test_sources.each_with_index do |source, index|
       exe_name = File.basename(source, ".cpp")
       exe_path = File.join(build_dir, exe_name)
-      cmd = ["g++", *options, source, "-o", exe_path]
+      cmd = [CC, *options, source, "-o", exe_path]
       iputs "[#{index + 1}/#{test_sources.size}] Building and running #{source}..."
       sh cmd.join(" ")
       sh exe_path

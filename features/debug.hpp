@@ -3,13 +3,6 @@
 #include "features/core.hpp"
 #include <string>
 
-/// `std::pair` を `(first, second)` 形式で出力する。
-template <typename T, typename U>
-fn operator<<(std::ostream &os, const std::pair<T, U> &p)->std::ostream & {
-  os << "(" << p.first << ", " << p.second << ")";
-  return os;
-}
-
 fn operator<<(std::ostream &os, const u128 &v)->std::ostream & {
   u128 temp = v;
   if (temp == 0) {
@@ -35,86 +28,6 @@ fn operator<<(std::ostream &os, const i128 &v)->std::ostream & {
   }
 }
 
-/// `std::vector` を可読なリスト形式で出力する。
-template <typename T>
-fn operator<<(std::ostream &os, const std::vector<T> &v)->std::ostream & {
-  os << "[";
-  for (usize i = 0; i < v.size(); ++i) {
-    os << v[i];
-    if (i + 1 != v.size()) {
-      os << ", ";
-    }
-  }
-  os << "]";
-  return os;
-}
-
-/// `std::set` を空白区切りで出力する。
-template <typename T>
-fn operator<<(std::ostream &os, const std::set<T> &v)->std::ostream & {
-  os << "{";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    os << *it;
-    auto next_it = it;
-    ++next_it;
-    if (next_it != v.end()) {
-      os << " ";
-    }
-  }
-  os << "}";
-  return os;
-}
-
-/// `std::unordered_set` を空白区切りで出力する。
-template <typename T>
-fn operator<<(std::ostream &os, const std::unordered_set<T> &v)
-    ->std::ostream & {
-  os << "{";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    os << *it;
-    auto next_it = it;
-    ++next_it;
-    if (next_it != v.end()) {
-      os << " ";
-    }
-  }
-  os << "}";
-  return os;
-}
-
-/// `std::map` を `key: value` の並びで出力する。
-template <typename T, typename U>
-fn operator<<(std::ostream &os, const std::map<T, U> &m)->std::ostream & {
-  os << "{";
-  for (auto it = m.begin(); it != m.end(); ++it) {
-    os << it->first << ": " << it->second;
-    auto next_it = it;
-    ++next_it;
-    if (next_it != m.end()) {
-      os << ", ";
-    }
-  }
-  os << "}";
-  return os;
-}
-
-/// `std::unordered_map` を `key: value` の並びで出力する。
-template <typename T, typename U>
-fn operator<<(std::ostream &os, const std::unordered_map<T, U> &m)
-    ->std::ostream & {
-  os << "{";
-  for (auto it = m.begin(); it != m.end(); ++it) {
-    os << it->first << ": " << it->second;
-    auto next_it = it;
-    ++next_it;
-    if (next_it != m.end()) {
-      os << ", ";
-    }
-  }
-  os << "}";
-  return os;
-}
-
 /// ローカル実行時のみ変数を stderr に出力し、値をそのまま返すデバッグマクロ群。
 #ifdef ONLINE_JUDGE
 #define dbg(x) x
@@ -125,21 +38,30 @@ fn operator<<(std::ostream &os, const std::unordered_map<T, U> &m)
   ([&]() {                                                                     \
     auto _dbg_x = (x);                                                         \
     std::cerr << "[dbg L" << __LINE__ << "] " << #x << " = ";                  \
-    std::cerr << _dbg_x << std::endl;                                          \
+    constexpr auto _dbg_format =                                               \
+        std::is_convertible_v<decltype(_dbg_x), std::string_view> ? "{:?}"     \
+                                                                  : "{}";      \
+    std::cerr << std::format(_dbg_format, _dbg_x) << std::endl;                \
     return _dbg_x;                                                             \
   }())
 #define dbg2(x)                                                                \
   ([&]() {                                                                     \
     auto _dbg_x = (x);                                                         \
     std::cerr << "[[dbg L" << __LINE__ << "]] " << #x << " = ";                \
-    std::cerr << _dbg_x << std::endl;                                          \
+    constexpr auto _dbg_format =                                               \
+        std::is_convertible_v<decltype(_dbg_x), std::string_view> ? "{:?}"     \
+                                                                  : "{}";      \
+    std::cerr << std::format(_dbg_format, _dbg_x) << std::endl;                \
     return _dbg_x;                                                             \
   }())
 #define dbg3(x)                                                                \
   ([&]() {                                                                     \
     auto _dbg_x = (x);                                                         \
     std::cerr << "[[[dbg L" << __LINE__ << "]]] " << #x << " = ";              \
-    std::cerr << _dbg_x << std::endl;                                          \
+    constexpr auto _dbg_format =                                               \
+        std::is_convertible_v<decltype(_dbg_x), std::string_view> ? "{:?}"     \
+                                                                  : "{}";      \
+    std::cerr << std::format(_dbg_format, _dbg_x) << std::endl;                \
     return _dbg_x;                                                             \
   }())
 #endif

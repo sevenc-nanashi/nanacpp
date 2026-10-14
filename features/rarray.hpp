@@ -15,12 +15,6 @@ class RArray : public std::vector<T, Allocator> {
 private:
   using Base = std::vector<T, Allocator>;
 
-  template <typename F> RArray(size_t size, F &&generator) : Base(size) {
-    for (size_t i = 0; i < size; ++i) {
-      this->operator[](i) = generator(i);
-    }
-  }
-
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
   template <typename Index>
   [[noreturn]] static fn
@@ -125,6 +119,13 @@ public:
   using typename Base::value_type;
 
   using Base::Base;
+  template <typename F>
+    requires std::invocable<F &, size_t &>
+  RArray(size_t size, F &&generator) : Base(size) {
+    for (size_t i = 0; i < size; ++i) {
+      this->operator[](i) = std::invoke(generator, i);
+    }
+  }
 
 #if NANACPP_RARRAY_HAS_SOURCE_LOCATION
   fn operator[](size_type index,
@@ -288,6 +289,20 @@ public:
     std::sort(this->begin(), this->end(), std::greater<T>());
   }
 
+  fn join(const std::string &separator) const -> std::string {
+    if (this->empty()) {
+      return "";
+    }
+    std::ostringstream oss;
+    for (size_type i = 0; i < this->size(); ++i) {
+      oss << (*this)[i];
+      if (i + 1 != this->size()) {
+        oss << separator;
+      }
+    }
+    return oss.str();
+  }
+
   template <typename F> fn sort_by(F &&selector) const -> RArray {
     RArray result = *this;
     result.sort_by_inplace(std::forward<F>(selector));
@@ -365,19 +380,6 @@ public:
                            std::multiplies<T>());
   }
 };
-
-template <typename T>
-fn operator<<(std::ostream &os, const RArray<T> &v)->std::ostream & {
-  os << "[";
-  for (usize i = 0; i < v.size(); ++i) {
-    os << v[i];
-    if (i + 1 != v.size()) {
-      os << ", ";
-    }
-  }
-  os << "]";
-  return os;
-}
 
 template <typename T> using RArray2 = RArray<RArray<T>>;
 template <typename T> using RArray3 = RArray<RArray<RArray<T>>>;

@@ -33,13 +33,3 @@ fn print(const T &first, const Args &...args) -> void {
     std::cout << NANACPP_PRINT_EOL;
   }
 }
-template <typename T>
-fn print(const std::vector<T> &vec, const std::string &sep) -> void {
-  enumerate(x, i, vec) {
-    std::cout << x;
-    if (i + 1 != vec.size()) {
-      std::cout << sep;
-    }
-  }
-  std::cout << NANACPP_PRINT_EOL;
-}

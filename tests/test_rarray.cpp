@@ -1,3 +1,4 @@
+#include "features/debug.hpp"
 #include "features/rarray.hpp"
 #include "features/rrange.hpp"
 
@@ -156,11 +157,14 @@ int main() {
       std::is_same_v<decltype(moved_words), std::vector<std::string>>);
   assert((moved_words == std::vector<std::string>{"hello", "world"}));
 
-  std::ostringstream oss;
-  oss << unordered_nums;
-  assert(oss.str() == "[3, 1, 4, 1, 5, 9, 2]");
-
 #ifndef ONLINE_JUDGE
+  std::ostringstream debug_output;
+  auto *previous = std::cerr.rdbuf(debug_output.rdbuf());
+  dbg(unordered_nums);
+  std::cerr.rdbuf(previous);
+  assert(
+      debug_output.str().ends_with("unordered_nums = [3, 1, 4, 1, 5, 9, 2]\n"));
+
   bool mutable_out_of_range = false;
   try {
     nums[nums.size()];
