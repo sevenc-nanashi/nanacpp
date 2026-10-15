@@ -1,3 +1,4 @@
 -I.
 -std=gnu++23
 -Wno-misc-definitions-in-headers
+-DNANACPP_EDITOR_MODE
