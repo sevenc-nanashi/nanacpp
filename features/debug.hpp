@@ -3,6 +3,16 @@
 #include "features/core.hpp"
 #include <string>
 
+#ifdef ATCODER_MODINT_HPP
+template <>
+struct std::formatter<atcoder::modint998244353> : std::formatter<int> {
+  template <typename FormatContext>
+  auto format(const atcoder::modint998244353 &value, FormatContext &ctx) const {
+    return std::formatter<int>::format(value.val(), ctx);
+  }
+};
+#endif
+
 fn operator<<(std::ostream &os, const u128 &v)->std::ostream & {
   u128 temp = v;
   if (temp == 0) {
