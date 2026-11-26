@@ -54,6 +54,8 @@ using usize = std::make_unsigned<std::size_t>::type;
 using f32 = float;
 using f64 = double;
 
+i64 INF = 1L << 60;
+
 /// メモ：
 /// Compareを(T a, T b) -> boolとしたとき、優先して取り出されるのは、Compare(a,
 /// b)がtrueとなるbである。 つまり、Compareには「bを優先する条件」をいれる。
